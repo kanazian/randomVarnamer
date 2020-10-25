@@ -9,6 +9,8 @@ kanazian
 
 Inspired by
 <https://github.com/tomaztk/Useless_R_functions/blob/main/RJobTitleGenerator.R>
+Thanks to Shelby for having fun coming up fun words Some animals, bio
+terms, video game stuff, and common nouns
 
 ``` r
 Random_name <- function(n_out = 5) {
@@ -23,10 +25,10 @@ Random_name <- function(n_out = 5) {
   name_vec <- vector(mode = "character", length = n_out)
   for (i in 1:round(n_out)) {
     if (add_mod[i] == TRUE) {
-      name_vec[i] <- tolower(paste(sample(adj, 1), sample(mod, 1), sample(obj, 1), sep = "_"))
+      name_vec[i] <- paste(sample(adj, 1), sample(mod, 1), sample(obj, 1), sep = "_")
     } else {
-      name_vec[i] <- tolower(paste(ifelse(as.logical(round(runif(1))), sample(adj, 1), sample(mod, 1)),
-                                   sample(obj, 1), sep = "_"))
+      name_vec[i] <- paste(ifelse(as.logical(round(runif(1))), sample(adj, 1), sample(mod, 1)),
+                                   sample(obj, 1), sep = "_")
     } #endif
   } #endfor
   return(name_vec)
@@ -35,8 +37,8 @@ Random_name <- function(n_out = 5) {
 Random_name(10)
 ```
 
-    ##  [1] "envious_gopher"              "clumsy_clove_nucleus"       
-    ##  [3] "pearl_armadillo"             "shiny_chalice_pinemarten"   
-    ##  [5] "distinct_cerulean_alpaca"    "thickset_beluga"            
-    ##  [7] "victorious_colossal_variety" "forlorn_radio"              
-    ##  [9] "quizzical_halibut"           "lazy_marriage"
+    ##  [1] "tense_cocktail"                  "brick_spectre"                  
+    ##  [3] "weary_camel_depth"               "mushy_flash_driver"             
+    ##  [5] "courageous_chalice_president"    "kind_truth"                     
+    ##  [7] "funky_version"                   "obedient_powderblue_information"
+    ##  [9] "funky_midnightblue_dingo"        "helpless_young_nature"
