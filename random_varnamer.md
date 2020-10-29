@@ -10,10 +10,10 @@ kanazian
 Inspired by
 <https://github.com/tomaztk/Useless_R_functions/blob/main/RJobTitleGenerator.R>
 Thanks to shelby for having fun coming up with words User assumes all
-responsibility for terrible code due to randomly named variables Todo:
-output as snakecase or camelcase
+responsibility for terrible code due to randomly named variables
 
 ``` r
+library(tools)
 Random_name <- function(n_out = 5, out = "snakecase") {
   adj <- unique(c("addicted","adorable","adventurous","aggressive","agreeable","alert","alive","amused","angry","annoyed","annoying","anxious","arrogant","ashamed","attractive","average","awful","bad","beautiful","better","bewildered","black","blended","bloody","blushing","bored","brainy","brave","breakable","bright","bright","busy","calm","careful","cautious","charming","cheerful","clean","clear","clever","cloudy","clumsy","colorful","combative","comfortable","concerned","condemned","confused","cooperative","courageous","crabby","crazy","creepy","crowded","cruel","curious","cute","dangerous","dark","dead","defeated","defiant","delightful","depressed","determined","different","difficult","disgusted","distinct","disturbed","dizzy","doubtful","drab","drab","dull","eager","easy","egregious","elated","elegant","embarrassed","enchanting","encouraging","energetic","enthusiastic","envious","evil","excited","expensive","exuberant","fair","faithful","famous","fancy","fantastic","fierce","filthy","fine","foolish","fragile","frail","frantic","friendly","frightened","funky","funny","gentle","gifted","glamorous","gleaming","glorious","good","gorgeous","graceful","gregarious","grieving","grotesque","grumpy","handsome","happy","healthy","helpful","helpless","hilarious","homeless","homely","horrible","humble","hungry","hurt","icky","ill","important","impossible","inexpensive","innocent","inquisitive","itchy","jealous","jellied","jittery","jolly","joyous","keratinous","kind","lazy","light","lively","lonely","long","lovely","lucky","lusty","magnificent","misty","modern","monotonous","motionless","muddy","mushy","mysterious","nasty","naughty","nervous","nice","noble","nutty","obedient","obnoxious","odd","ombre","oozy","open","outrageous","outstanding","panicky","perfect","petite","plain","pleasant","poised","poor","powerful","precious","prickly","proud","putrid","puzzled","quaint","quizzical","ragged","real","relieved","repulsive","rich","scary","selfish","sheepish","shiny","shy","silly","sleepy","smiling","smoggy","sore","sparkling","splendid","spotless","stormy","strange","stupid","successful","super","talented","tame","tasty","tender","tense","tepid","terrible","thankful","thoughtful","thoughtless","tired","tough","troubled","ugliest","ugly","uninterested","unsightly","unusual","upgraded","upset","uptight","vain","vast","victorious","vivacious","wandering","waxy","weak","weary","wicked","wild","witty","worried","worrisome","wrong","zany","zealous","zesty","zippy"))
   mod <- unique(c("acrid","airy","aqua","aquamarine","azure","baby","beefy","beige","big","bird","bisque","black","bland","blast","blue","bony","boundless","brackish","brass","brawny","brick","broad","bronze","brown","brulee","buff","bulbous","bulky","burly","butter","camel","caravan","cerulean","chalice","chartruse","chocolate","chowder","chunky","clove","colossal","compact","copper","coral","cornsilk","corny","corpulent","cosmic","cricket","crimson","crusty","cubby","curvy","cyan","dairy","dance","delight","dreaming","drops","dust","dwarf","eggy","elfin","emaciated","endless","enormous","enormous","epic","expansive","extensive","fat","feldspar","ferocious","fest","flash","fleshy","forlorn","fuchsia","galaxy","gargantuan","garish","garnished","gaunt","giant","gigantic","ginger","glorious","glow","gold","grain","grand","grass","gray","great","green","haggard","hangry","haphazard","heavy","hefty","hollow","honeydew","hue","huge","hulking","illimitable","immeasurable","immense","indigo","infinitesimal","inglorious","inky","ivory","julienned","jumbled","khaki","lanky","large","lavender","lean","light","lily","limber","lime","limitless","limp","linen","little","magenta","mammoth","mane","maroon","massive","meager","measly","microscopic","mini","miniature","minuscule","minute","moccasin","monstrous","moss","moth","mustard","narrow","navy","notorious","obese","olive","orange","orchid","outsized","oval","oversize","overweight","ovoid","palacial","pale","paltry","passion","pearl","pentagonal","peruvian","petite","pink","plateau","plum","plump","pollen","portly","poundcake","pudgy","puny","purple","quaint","quick","quiet","rabbit","rabid","red","ridge","rock","rotund","round","salmon","sand","scanty","scraggy","scrawny","sea","seed","shadow","short","sienna","silk","silver","sizable","skeletal","skimpy","skinny","slender","slim","small","snow","sorbet","souffle","split","spout","square","squat","stage","star","stocky","stone","stout","strapping","stupendous","sturdy","sunlight","swole","tail","tall","tan","tangerine","tart","tea","teal","teensy","teeny","terrible","thick","thickset","thin","thistle","tiny","titanic","tomato","towering","traditional","trifling","trim","tubby","turquoise","tweed","undersized","underweight","undulating","unlimited","vast","victorious","violet","vivacious","wee","wheat","white","whopping","wide","wild","wilted","withered","woods","xrayed","yellow","young","zesty"))
@@ -25,12 +25,34 @@ Random_name <- function(n_out = 5, out = "snakecase") {
   #less likely to make 3 word names
   add_mod <- as.logical(round(runif(round(n_out), min = 0, max = 0.85)))
   name_vec <- vector(mode = "character", length = n_out)
+  
   for (i in 1:round(n_out)) {
+    #return 3 word names
     if (add_mod[i] == TRUE) {
-      name_vec[i] <- paste(sample(adj, 1), sample(mod, 1), sample(obj, 1), sep = "_")
+      #handle output as snake or camelcase
+      if (stringr::str_detect(out, "camel")) {
+        name_vec[i] <- paste(toTitleCase(sample(adj, 1)), 
+                             toTitleCase(sample(mod, 1)), 
+                             toTitleCase(sample(obj, 1)), 
+                             sep = "")
+      } else {
+        name_vec[i] <- paste(sample(adj, 1), 
+                             sample(mod, 1), 
+                             sample(obj, 1), sep = "_")
+      } #endif
+      #return 2 word names
     } else {
-      name_vec[i] <- paste(ifelse(as.logical(round(runif(1))), sample(adj, 1), sample(mod, 1)),
-                                   sample(obj, 1), sep = "_")
+      if (stringr::str_detect(out, "camel")) {
+        name_vec[i] <- paste(ifelse(as.logical(round(runif(1))), 
+                                    toTitleCase(sample(adj, 1)), 
+                                    toTitleCase(sample(mod, 1))),
+                                    toTitleCase(sample(obj, 1)), sep = "")
+      } else {
+        name_vec[i] <- paste(ifelse(as.logical(round(runif(1))), 
+                                    sample(adj, 1), 
+                                    sample(mod, 1)),
+                                    sample(obj, 1), sep = "_")
+      } #endif 
     } #endif
   } #endfor
   return(name_vec)
@@ -39,8 +61,14 @@ Random_name <- function(n_out = 5, out = "snakecase") {
 Random_name(10)
 ```
 
-    ##  [1] "fair_cornsilk_marmot"      "kind_portly_linda"        
-    ##  [3] "ashamed_irrawaddy"         "jumbled_population"       
-    ##  [5] "pink_teaching"             "sturdy_information"       
-    ##  [7] "traditional_audience"      "beige_dartfrog"           
-    ##  [9] "glamorous_undulating_gear" "cerulean_bison"
+    ##  [1] "handsome_lipid"            "spotless_pale_oven"       
+    ##  [3] "curious_watt"              "blushing_cosmic_education"
+    ##  [5] "fest_advice"               "giant_muskox"             
+    ##  [7] "nasty_bangalore"           "joyous_bird_tube"         
+    ##  [9] "clumsy_population"         "bewildered_television"
+
+``` r
+Random_name(3, out = "camelcase")
+```
+
+    ## [1] "PlumpBloodhound" "RockGoal"        "CrowdedFrog"
